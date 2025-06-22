@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Панель администратора{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  
+  <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Okuw orunbasarlar</a>
+</div>
+
+<h2>Hasabatlaryň sanawy</h2>
+<a href="{{ url_for('add_form') }}" class="btn btn-success mb-3">➕ Hasabat döret</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Hasabatyň ady</th>
+      <th>Döredilen wagty</th>
+      <th>Täzelenen wagty</th>
+      <th>Berkidilen faýl</th>
+      <th>Jogaplar</th>
+      <th>Ýükläp al</th>
+      <th>Üýtget</th>
+      <th>Poz</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for form in forms %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ form.title }}</td>
+        <td>{{ form.created_at | localtime }}</td>
+        <td>
+          {% if last_answers.get(form.id) %}
+            {{ last_answers[form.id] | localtime }}
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td>
+          {% if form.filename %}
+            <a href="{{ url_for('form_file', filename=form.filename) }}" target="_blank">📎 ýükle</a>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('view_form_answers', form_id=form.id) }}" class="btn btn-sm btn-outline-info">👁 Gör</a>
+        </td>
+        <td>
+          <a href="{{ url_for('export_form', form_id=form.id) }}" class="btn btn-sm btn-outline-success">📤 XLS</a>
+        </td>
+        <td>
+          <a href="{{ url_for('edit_form', form_id=form.id) }}" class="btn btn-sm btn-outline-primary">✏️ Üýtget</a>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('delete_form', form_id=form.id) }}" onsubmit="return confirm('Удалить форму?');">
+            <button type="submit" class="btn btn-sm btn-danger">🗑 Poz</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

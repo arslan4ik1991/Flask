@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Hasabaty doldurmak: {{ form.title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-header bg-success text-white">
+    <h5 class="mb-0"> {{ form.title }} barada hasabat</h5>
+  </div>
+  <div class="card-body">
+    <p><strong>📅 Hasabatyň gelen wagty:</strong> {{ form.created_at | localtime }}</p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% for question in questions %}
+        <div class="mb-4">
+          <label class="form-label"><strong>Sorag {{ loop.index }}:</strong> {{ question.text }}</label>
+          <textarea class="form-control" name="question_{{ question.id }}" rows="3">{{ existing_answers[question.id|string] if existing_answers else '' }}</textarea>
+        </div>
+      {% endfor %}
+
+      <div class="mb-4">
+        <label class="form-label"><strong>📎 Faýl berkitmek (elektron ýada skan gol, möhür):</strong></label>
+        <input class="form-control" type="file" name="file">
+        {% if answer and answer.filename %}
+          <div class="mt-2">
+            <span>Ýüklenen: </span>
+            <a href="{{ url_for('form_file', filename=answer.filename) }}" target="_blank">{{ answer.filename }}</a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">💾 Hasabaty ugratmak</button>
+        <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-outline-secondary">↩ Yza</a>
+      </div>
+    </form>
+
+    {% if answer %}
+    <hr>
+    <p><strong>🕓 Ilkinji jogap berlen wagt:</strong> {{ answer.created_at | localtime }}</p>
+    <p><strong>🕑 Soňky jogap berlen wagt:</strong> {{ answer.updated_at | localtime }}</p>
+    {% else %}
+    <div class="mt-4 text-muted">
+      <em>Siz hasabata heniz jogap bermediňiz.</em>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

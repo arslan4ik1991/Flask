@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Hasabatlar formasy{% endblock %}
+
+{% block content %}
+<h2 class="text-success mb-4">📋 "{{ form.title }}" boýunça jogaplar</h2>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped align-middle">
+    <thead class="table-success text-center">
+      <tr>
+        <th>#</th>
+        <th>Familiýasy ady</th>
+        <th>Email</th>
+        <th>Wagty</th>
+        {% for q in form.questions %}
+          <th>{{ q.text }}</th>
+        {% endfor %}
+        <th>Faýl</th>
+        <th>Bellik (habarly et)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        {% set answer = answer_objs.get(user.id) %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ user.full_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            {% if answer and answer.updated_at %}
+              {{ answer.updated_at | localtime }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+
+          {% for q in form.questions %}
+            <td>
+              {% if answer %}
+                {{ answer_map.get(user.id, {}).get(q.id|string, '') }}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+          {% endfor %}
+
+          <td class="text-center">
+            {% if answer and answer.filename %}
+              <a href="{{ url_for('form_file', filename=answer.filename) }}" target="_blank">📎</a>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+
+          <td>
+            {% if answer %}
+              <form method="post" action="{{ url_for('save_note', answer_id=answer.id) }}" class="d-flex">
+                <input type="text" name="note" value="{{ answer.note or '' }}" class="form-control form-control-sm me-1">
+                <button class="btn btn-outline-success btn-sm">💾</button>
+              </form>
+            {% else %}
+              <span class="text-muted">Jogap ýok</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<a href="{{ url_for('dashboard') }}" class="btn btn-outline-success mt-3">🔙 Yza – Hasabat sanawyna</a>
+{% endblock %}

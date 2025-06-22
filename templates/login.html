@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Ulgama giriş{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="card shadow p-4" style="min-width: 320px; max-width: 400px; width: 100%;">
+    <h2 class="mb-4 text-center text-success">E-hasabat</h2>
+    <form method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Ulanjy ady</label>
+        <input type="text" id="username" name="username" class="form-control" required autofocus>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Açar sözi</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Ulgama gir</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

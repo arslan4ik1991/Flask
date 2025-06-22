@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Заполнить форму: {{ form.title }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+<div class="container mt-4" style="max-width:700px;">
+  <h3>Форма: {{ form.title }}</h3>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-info">{{ messages[0] }}</div>
+    {% endif %}
+  {% endwith %}
+  <form method="POST" enctype="multipart/form-data">
+    {% for q in questions %}
+      <div class="mb-3">
+        <label class="form-label">{{ loop.index }}. {{ q.text }}</label>
+        <input type="text" name="question_{{ q.id }}" class="form-control" 
+               value="{{ existing_answers[q.id|string] if existing_answers else '' }}" required />
+      </div>
+    {% endfor %}
+
+    <div class="mb-3">
+      <label for="photo" class="form-label">Прикрепить фото (если есть)</label>
+      <input type="file" name="photo" class="form-control" accept="image/*" />
+      {% if existing_answer and existing_answer.filename %}
+        <p>Загруженное фото: <a href="{{ url_for('uploaded_file', filename=existing_answer.filename) }}" target="_blank">{{ existing_answer.filename }}</a></p>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Отправить</button>
+    <a href="{{ url_for('teacher_dashboard') }}" class="btn btn-secondary ms-2">Отмена</a>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Maglumaty üýtget{% endblock %}
+
+{% block content %}
+<h2>Maglumaty üýtget</h2>
+<form method="post">
+  <div class="mb-3">
+    <label>Ulanjy ady</label>
+    <input type="text" name="username" class="form-control" value="{{ user.username }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Familiýasy, ady we atasynyň ady </label>
+    <input type="text" name="full_name" class="form-control" value="{{ user.full_name }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Email</label>
+    <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Telefon belgisi</label>
+    <input type="text" name="position" class="form-control" value="{{ user.position }}">
+  </div>
+  <div class="mb-3">
+    <label>Täze açar sözi (üýtgemeýän bolsa boş goý)</label>
+    <input type="password" name="password" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-primary">Ýatda sakla</button>
+  <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Yza</a>
+</form>
+{% endblock %}

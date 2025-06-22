@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Добавить учителя{% endblock %}
+
+{% block content %}
+<h2>Täze orunbasar</h2>
+<form method="post">
+  <div class="mb-3">
+    <label>Ulanyjy ady</label>
+    <input type="text" name="username" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Familiýasy, ady we atasynyň ady</label>
+    <input type="text" name="full_name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Email</label>
+    <input type="email" name="email" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Telefon belgisi</label>
+    <input type="text" name="position" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>Açar sözi</label>
+    <input type="password" name="password" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-success">Täze ulanyjy döret</button>
+  <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Yza</a>
+</form>
+{% endblock %}

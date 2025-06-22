@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Okuw orunbasarlaryň sanawy{% endblock %}
+{% block content %}
+<h2>Okuw orunbasarlaryň sanawy</h2>
+
+<a href="{{ url_for('add_user') }}" class="btn btn-success mb-3">➕ Okuw orunbasar goş</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th><th>Familiýasy, ady we atasynyň ady</th><th>Email</th><th>Telefon belgisi</th><th>Amal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ user.full_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.position }}</td>
+      <td>
+        <a href="{{ url_for('edit_user', user_id=user.id) }}" class="btn btn-sm btn-primary">✏️</a>
+        <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" style="display:inline;" onsubmit="return confirm('Удалить учителя?');">
+          <button type="submit" class="btn btn-sm btn-danger">🗑</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ url_for('dashboard') }}" class="btn btn-secondary">← Hasabatlaryň sanawyna geç</a>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Hasabaty üýtgetmek{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="text-success">✏️ Hasabaty üýtgetmek</h2>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success">🔙 Yza – Hasabat sanawyna</a>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
+  <div class="mb-3">
+    <label class="form-label">Hasabatyň ady</label>
+    <input type="text" name="title" class="form-control" value="{{ form.title }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Täze faýl (islege görä)</label>
+    <input type="file" name="file" class="form-control">
+    {% if form.filename %}
+      <small class="form-text text-muted">Häzirki faýl: 
+        <a href="{{ url_for('form_file', filename=form.filename) }}" target="_blank">{{ form.filename }}</a>
+      </small>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Soraglar:</label>
+    <div id="questions">
+      {% for q in form.questions %}
+        <div class="input-group mb-2 question-row">
+          <input type="text" name="existing_question_{{ q.id }}" class="form-control" value="{{ q.text }}" required>
+          <button type="button" class="btn btn-outline-danger" onclick="removeQuestion(this)">🗑</button>
+        </div>
+      {% endfor %}
+    </div>
+    <button type="button" class="btn btn-outline-secondary mt-2" onclick="addQuestion()">➕ Täze sorag</button>
+  </div>
+
+  <div class="text-end">
+    <button class="btn btn-success">💾 Ýatda sakla</button>
+  </div>
+</form>
+
+<script>
+function addQuestion() {
+  const container = document.getElementById('questions');
+  const div = document.createElement('div');
+  div.className = 'input-group mb-2 question-row';
+  div.innerHTML = `
+    <input type="text" name="new_question" class="form-control" required>
+    <button type="button" class="btn btn-outline-danger" onclick="removeQuestion(this)">🗑</button>
+  `;
+  container.appendChild(div);
+}
+
+function removeQuestion(btn) {
+  btn.closest('.question-row').remove();
+}
+</script>
+{% endblock %}

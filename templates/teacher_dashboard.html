@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Hasabatlaryň sanawy{% endblock %}
+
+{% block content %}
+<h2>Hasabatlaryň sanawy</h2>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>T/b</th>
+      <th>Hasabatyň ady</th>
+      <th>Berkidilen faýl</th>
+      <th>Gelen wagty</th>
+      <th>Hasabat ugradylan wagty</th>
+      <th>Amal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for form in forms %}
+      {% set answer = form.answers|selectattr('user_id', 'equalto', session['user_id'])|first %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ form.title }}</td>
+        <td>
+          {% if form.filename %}
+            <a href="{{ url_for('form_file', filename=form.filename) }}" target="_blank">📎 Ýükle</a>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td>{{ form.created_at | localtime }}</td>
+        <td>
+          {% if answer %}
+            {{ answer.updated_at | localtime }}
+          {% else %}
+            Hasabat tabşyrylmadyk !
+          {% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('teacher_fill_form', form_id=form.id) }}" class="btn btn-primary btn-sm">Hasabaty doldurmak/Görmek</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

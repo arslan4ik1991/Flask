@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- адаптация -->
+  <title>{% block title %}E-hasabat{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+  <style>
+    body {
+      background-color: #f0fdf4;
+      padding-top: 20px;
+    }
+    .navbar {
+      background-color: #198754 !important;
+    }
+    .navbar .navbar-brand {
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .btn-outline-light {
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+    .btn-outline-light:hover {
+      background-color: #ffffff;
+      color: #198754;
+    }
+    .alert {
+      font-size: 0.95rem;
+    }
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg mb-4">
+  <div class="container-fluid">
+   <a class="navbar-brand" href="{% if session.role == 'admin' %}{{ url_for('dashboard') }}{% else %}{{ url_for('teacher_dashboard') }}{% endif %}">
+
+  Mary welaýat Baş bilim müdirligi <br> E-hasabat platformasy
+</a>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+      {% if session.user_id %}
+      <form class="d-flex" method="post" action="{{ url_for('logout') }}">
+        <button class="btn btn-outline-light">Ulgamdan çyk</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-info">
+        {% for message in messages %}
+          <div>{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+
+<footer>
+  <p>&copy; 2025 Mary welaýat Baş bilim müdirligi</p>
+  <p>G.Ataýew</p>
+</footer>
+
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
